@@ -47,17 +47,34 @@ async function carregarChamados() {
 
         grid.innerHTML = dados.map(os => {
             let statusClass = 'analise';
+            if (os.status === 'Em Reasync function carregarChamados() {
+    const grid = document.getElementById('gridChamados');
+
+    try {
+        const response = await fetch(`${API_URL}/chamados/cliente/${cliente.id_cliente}`);
+        const dados = await response.json();
+
+        if (!response.ok) throw new Error(dados.erro || 'Erro ao carregar chamados.');
+
+        chamadosCache = dados;
+
+        if (dados.length === 0) {
+            grid.innerHTML = `<div class="loading">Você ainda não abriu nenhum chamado.</div>`;
+            return;
+        }
+
+        grid.innerHTML = dados.map(os => {
+            let statusClass = 'analise';
             if (os.status === 'Em Reparo') statusClass = 'reparo';
             if (os.status === 'Finalizado') statusClass = 'finalizado';
 
-            // Só permite editar/excluir enquanto o chamado ainda está em análise
-            // (depois que entra em reparo, já está sendo tratado pela oficina)
             const podeEditar = os.status === 'Em Análise';
 
+            // ADICIONADAS ASPAS SIMPLES EM VOLTA DE '${os.id_os}' PARA PREVENIR ERROS NO NAVEGADOR
             const acoes = podeEditar ? `
                 <div class="car-acoes">
-                    <button class="btn-edit" onclick="editarChamado(${os.id_os})">Editar</button>
-                    <button class="btn-delete" onclick="excluirChamado(${os.id_os})">Excluir</button>
+                    <button class="btn-edit" onclick="editarChamado('${os.id_os}')">Editar</button>
+                    <button class="btn-delete" onclick="excluirChamado('${os.id_os}')">Excluir</button>
                 </div>
             ` : '';
 
