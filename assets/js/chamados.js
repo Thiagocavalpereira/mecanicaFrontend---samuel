@@ -116,7 +116,13 @@ function configurarModal() {
         form.reset();
         if (modalTitulo) modalTitulo.textContent = 'Abrir Novo Chamado';
         if (btnSalvar) btnSalvar.textContent = 'Abrir Chamado';
-        if (veiculoGroup) veiculoGroup.style.display = 'flex';
+        
+        // Altere este bloco if para ficar exatamente assim:
+        if (veiculoGroup) {
+            veiculoGroup.style.display = 'flex';
+            document.getElementById('veiculoSelect').required = true; // <-- LINHA ADICIONADA
+        }
+        
         modal.classList.add('active');
         carregarVeiculosDoCliente();
     });
@@ -201,7 +207,12 @@ function editarChamado(idOs) {
     const veiculoGroup = document.getElementById('veiculoSelectGroup');
     if (modalTitulo) modalTitulo.textContent = 'Editar Chamado';
     if (btnSalvar) btnSalvar.textContent = 'Salvar Alterações';
-    if (veiculoGroup) veiculoGroup.style.display = 'none'; // não faz sentido trocar o veículo de um chamado já aberto
+    
+    // Altere este bloco if para ficar exatamente assim:
+    if (veiculoGroup) {
+        veiculoGroup.style.display = 'none'; 
+        document.getElementById('veiculoSelect').required = false; // <-- LINHA ADICIONADA
+    }
 
     document.getElementById('modalChamado').classList.add('active');
 }
