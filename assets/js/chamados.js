@@ -47,30 +47,12 @@ async function carregarChamados() {
 
         grid.innerHTML = dados.map(os => {
             let statusClass = 'analise';
-            if (os.status === 'Em Reasync function carregarChamados() {
-    const grid = document.getElementById('gridChamados');
-
-    try {
-        const response = await fetch(`${API_URL}/chamados/cliente/${cliente.id_cliente}`);
-        const dados = await response.json();
-
-        if (!response.ok) throw new Error(dados.erro || 'Erro ao carregar chamados.');
-
-        chamadosCache = dados;
-
-        if (dados.length === 0) {
-            grid.innerHTML = `<div class="loading">Você ainda não abriu nenhum chamado.</div>`;
-            return;
-        }
-
-        grid.innerHTML = dados.map(os => {
-            let statusClass = 'analise';
             if (os.status === 'Em Reparo') statusClass = 'reparo';
             if (os.status === 'Finalizado') statusClass = 'finalizado';
 
             const podeEditar = os.status === 'Em Análise';
 
-            // ADICIONADAS ASPAS SIMPLES EM VOLTA DE '${os.id_os}' PARA PREVENIR ERROS NO NAVEGADOR
+            // Aspas simples adicionadas corretamente em volta do ID
             const acoes = podeEditar ? `
                 <div class="car-acoes">
                     <button class="btn-edit" onclick="editarChamado('${os.id_os}')">Editar</button>
@@ -134,10 +116,9 @@ function configurarModal() {
         if (modalTitulo) modalTitulo.textContent = 'Abrir Novo Chamado';
         if (btnSalvar) btnSalvar.textContent = 'Abrir Chamado';
         
-        // Altere este bloco if para ficar exatamente assim:
         if (veiculoGroup) {
             veiculoGroup.style.display = 'flex';
-            document.getElementById('veiculoSelect').required = true; // <-- LINHA ADICIONADA
+            document.getElementById('veiculoSelect').required = true;
         }
         
         modal.classList.add('active');
@@ -211,7 +192,7 @@ function configurarModal() {
 }
 
 function editarChamado(idOs) {
-    const chamado = chamadosCache.find(c => c.id_os === idOs);
+    const chamado = chamadosCache.find(c => c.id_os == idOs); // Comparação flexível caso venha string do onclick
     if (!chamado) return;
 
     chamadoEmEdicao = idOs;
@@ -225,10 +206,9 @@ function editarChamado(idOs) {
     if (modalTitulo) modalTitulo.textContent = 'Editar Chamado';
     if (btnSalvar) btnSalvar.textContent = 'Salvar Alterações';
     
-    // Altere este bloco if para ficar exatamente assim:
     if (veiculoGroup) {
         veiculoGroup.style.display = 'none'; 
-        document.getElementById('veiculoSelect').required = false; // <-- LINHA ADICIONADA
+        document.getElementById('veiculoSelect').required = false;
     }
 
     document.getElementById('modalChamado').classList.add('active');
